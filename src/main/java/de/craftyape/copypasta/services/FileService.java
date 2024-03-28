@@ -1,4 +1,4 @@
-package de.craftyape.copypasta.fileio;
+package de.craftyape.copypasta.services;
 
 import com.google.gson.Gson;
 import de.craftyape.copypasta.entities.Pasta;
@@ -10,11 +10,11 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class FileIO {
+public class FileService {
 
     String filePath = "pasta.json";
     Gson gson = new Gson();
-    private FileIO() {
+    public FileService() {
     }
 
     protected static final Logger log = LogManager.getLogger();

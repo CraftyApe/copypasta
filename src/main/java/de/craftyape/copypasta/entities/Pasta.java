@@ -1,41 +1,19 @@
 package de.craftyape.copypasta.entities;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.awt.*;
-
-@Getter
+@Getter @Setter @AllArgsConstructor
 public class Pasta {
 
-    private Point position;
-    @Setter
+    private int position;
     private String title;
-    @Setter
     private String text;
 
-    public Pasta(int x, int y){
-        this.position = new Point(x, y);
-        this.title = "";
+    public Pasta(int position){
+        this.position = position;
+        this.title = "[not set]";
         this.text = "";
     }
-
-    public Pasta(String title, String text, int x, int y) {
-        this.position = new Point(x, y);
-        this.title = title;
-        this.text = text;
-    }
-
-    public void setPosition(int x, int y) {
-        this.position = new Point(x, y);
-    }
-
-    public int getX() {
-        return getPosition().x;
-    }
-
-    public int getY() {
-        return getPosition().y;
-    }
-
 }

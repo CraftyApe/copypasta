@@ -1,13 +1,20 @@
 package de.craftyape.copypasta;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import javax.swing.*;
 
-@SpringBootApplication
 public class CopypastaApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(CopypastaApplication.class, args);
+	CopypastaApplication(String[] args) {
+		// Initialize by loading json if it exists, otherwise set default pasta[]
+	}
+
+	public void show() {
+		// show UI
+	}
+
+	public static void main(final String[] args) {
+		// ...
+		SwingUtilities.invokeLater(() -> new CopypastaApplication(args).show());
 	}
 
 }
