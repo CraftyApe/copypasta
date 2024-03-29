@@ -5,36 +5,38 @@ import de.craftyape.copypasta.entities.Pasta;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class FileService {
 
-    String filePath = "pasta.json";
+    Path filePath = Paths.get("pasta.json");
     Gson gson = new Gson();
-    public FileService() {
-    }
 
     protected static final Logger log = LogManager.getLogger();
 
     public Pasta[] loadAllPasta() {
         try {
-            return gson.fromJson(new FileReader(filePath), Pasta[].class);
-        } catch (FileNotFoundException e) {
+            return gson.fromJson(Files.readString(filePath, StandardCharsets.UTF_8), Pasta[].class);
+        } catch (IOException e) {
+            Pasta[] defaultPastas = new Pasta[20];
+            for (int i = 0; i < 20; i++) {
+                defaultPastas[i] = new Pasta(i + 1);
+            }
             log.warn("File not found!");
-            return null;
+            return defaultPastas;
         }
     }
 
-    public String saveAllPasta(Pasta[] pastaArray) {
+    public void saveAllPasta(Pasta[] pastas) {
         try {
-            gson.toJson(pastaArray, new FileWriter(filePath));
-            return "Pasta saved.";
+            String jsonArray = gson.toJson(pastas);
+            Files.write(filePath, jsonArray.getBytes(StandardCharsets.UTF_8));
         } catch (IOException e) {
             log.warn("Error while saving pasta!");
-            return "Error while saving pasta!";
         }
     }
 
