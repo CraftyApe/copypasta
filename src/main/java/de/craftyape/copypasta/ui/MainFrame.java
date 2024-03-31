@@ -4,18 +4,17 @@ import de.craftyape.copypasta.entities.Pasta;
 import de.craftyape.copypasta.services.FileService;
 import de.craftyape.copypasta.ui.panels.ButtonPanel;
 import de.craftyape.copypasta.ui.panels.ConfigPanel;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import de.craftyape.copypasta.ui.panels.ParentPanel;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class MainFrame extends JFrame {
 
-    private static final Logger LOG = LogManager.getLogger(MainFrame.class);
     private final JPanel mainPanel = new JPanel();
     private ButtonPanel buttonPanel;
     private ConfigPanel configPanel;
+    private CurrentPanel currentPanel;
 
     private boolean switchToButtonPanel = false;
     private boolean switchToConfigPanel = false;
@@ -25,28 +24,21 @@ public class MainFrame extends JFrame {
 
     public MainFrame() {
         reloadPasta();
-        initComponents();
-        switchToButtonPanel = true;
-
-        if (switchToButtonPanel) {
-            switchToButtonPanel = false;
-            setButtonScene();
-        }
-        if (switchToConfigPanel) {
-            switchToConfigPanel = false;
-            setConfigScene();
-        }
     }
 
 
     private void initComponents() {
+        JMenuBar menuBar = new JMenuBar();
+
+        JMenu menuFile = new JMenu();
         JMenuItem load = new JMenuItem();
         JMenuItem save = new JMenuItem();
+        JPopupMenu.Separator menuSeparator = new JPopupMenu.Separator();
         JMenuItem exit = new JMenuItem();
 
-        JMenuBar menuBar = new JMenuBar();
-        JMenu menu = new JMenu();
-        JPopupMenu.Separator menuSeparator = new JPopupMenu.Separator();
+        JMenu menuView = new JMenu();
+        JMenuItem buttons = new JMenuItem();
+        JMenuItem config = new JMenuItem();
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setTitle("CopyPasta");
@@ -57,26 +49,35 @@ public class MainFrame extends JFrame {
                 mainPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING).addGap(0, 1280, 1280)
         );
 
-        // Set menu items
-        menu.setText("File");
-
+    // Set menu items
+        // File menu
+        menuFile.setText("File");
         load.setText("Load");
         load.addActionListener(e -> reloadPasta());
-
         save.setText("Save");
         save.addActionListener(e -> fileService.saveAllPasta(pastas));
-
         exit.setText("Exit");
         exit.addActionListener(e -> System.exit(0));
+        menuFile.add(load);
+        menuFile.add(save);
+        menuFile.add(menuSeparator);
+        menuFile.add(exit);
 
-        menu.add(load);
-        menu.add(save);
-        menu.add(menuSeparator);
-        menu.add(exit);
+        // View menu
+        menuView.setText("View");
+        buttons.setText("Buttons");
+        buttons.addActionListener(e -> setButtonScene());
+        config.setText("Configuration");
+        config.addActionListener(e -> setConfigScene());
+        if (currentPanel != CurrentPanel.BUTTONS) {menuView.add(buttons);}
+        if (currentPanel != CurrentPanel.CONFIG) {menuView.add(config);}
 
-        menuBar.add(menu);
+        // set Menu bar
+        menuBar.add(menuFile);
+        menuBar.add(menuView);
         setJMenuBar(menuBar);
 
+        // set Layout and show mainPanel
         GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -92,11 +93,19 @@ public class MainFrame extends JFrame {
 
     private void reloadPasta() {
         pastas = fileService.loadAllPasta();
-        mainPanel.repaint();
+        initComponents();
+        if (!switchToButtonPanel && !switchToConfigPanel) {switchToButtonPanel = true;}
+        if (switchToButtonPanel) {
+            switchToButtonPanel = false;
+            setButtonScene();
+        }
+        if (switchToConfigPanel) {
+            switchToConfigPanel = false;
+            setConfigScene();
+        }
     }
 
     public void setButtonScene() {
-        mainPanel.removeAll();
         buttonPanel = new ButtonPanel(pastas);
         buttonPanel.addListener(new SceneChangeListener() {
             @Override
@@ -105,14 +114,23 @@ public class MainFrame extends JFrame {
                 switchToConfigPanel = true;
             }
         });
-        mainPanel.setLayout(new GridLayout(1, 1));
-        mainPanel.add(buttonPanel);
-        mainPanel.revalidate();
-        mainPanel.repaint();
+        refreshMainPanel(buttonPanel);
+        currentPanel = CurrentPanel.BUTTONS;
     }
 
     public void setConfigScene() {
-        // blergh
+        mainPanel.removeAll();
+        configPanel = new ConfigPanel(pastas);
+        currentPanel = CurrentPanel.CONFIG;
+        refreshMainPanel(configPanel);
+    }
+
+    public void refreshMainPanel(ParentPanel panel) {
+        mainPanel.removeAll();
+        mainPanel.setLayout(new GridLayout(1, 1));
+        mainPanel.add(panel);
+        mainPanel.revalidate();
+        mainPanel.repaint();
     }
 
 }
