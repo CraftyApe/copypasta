@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.craftyape</groupId>
 	<artifactId>copypasta</artifactId>
-	<version>0.0.2-SNAPSHOT</version>
+	<version>0.1.0</version>
 	<name>copypasta</name>
 	<description>Copy custom texts to clipboard with the press of a button.</description>
 	<properties>
