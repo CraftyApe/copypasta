@@ -8,18 +8,18 @@ import de.craftyape.copypasta.ui.panels.ParentPanel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
 public class MainFrame extends JFrame {
 
     private final JPanel mainPanel = new JPanel();
     private ButtonPanel buttonPanel;
-    private ConfigPanel configPanel;
     private CurrentPanel currentPanel;
 
     private boolean switchToButtonPanel = false;
     private boolean switchToConfigPanel = false;
 
-    private Pasta[] pastas;
+    private List<Pasta> pastas;
     private final transient FileService fileService = new FileService();
 
     public MainFrame() {
@@ -120,9 +120,10 @@ public class MainFrame extends JFrame {
 
     public void setConfigScene() {
         mainPanel.removeAll();
-        configPanel = new ConfigPanel(pastas);
+        ConfigPanel configPanel = new ConfigPanel(pastas);
         currentPanel = CurrentPanel.CONFIG;
         refreshMainPanel(configPanel);
+        currentPanel = CurrentPanel.CONFIG;
     }
 
     public void refreshMainPanel(ParentPanel panel) {

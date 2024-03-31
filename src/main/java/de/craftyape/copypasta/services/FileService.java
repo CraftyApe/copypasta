@@ -11,6 +11,8 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.List;
 
 public class FileService {
 
@@ -19,20 +21,20 @@ public class FileService {
 
     protected static final Logger log = LogManager.getLogger();
 
-    public Pasta[] loadAllPasta() {
+    public List<Pasta> loadAllPasta() {
         try {
-            return gson.fromJson(Files.readString(filePath, StandardCharsets.UTF_8), Pasta[].class);
+            return Arrays.asList(gson.fromJson(Files.readString(filePath, StandardCharsets.UTF_8), Pasta[].class));
         } catch (IOException e) {
             Pasta[] defaultPastas = new Pasta[20];
             for (int i = 0; i < 20; i++) {
                 defaultPastas[i] = new Pasta(i + 1);
             }
             log.warn("File not found!");
-            return defaultPastas;
+            return Arrays.asList(defaultPastas);
         }
     }
 
-    public void saveAllPasta(Pasta[] pastas) {
+    public void saveAllPasta(List<Pasta> pastas) {
         try {
             String jsonArray = gson.toJson(pastas);
             Files.write(filePath, jsonArray.getBytes(StandardCharsets.UTF_8));

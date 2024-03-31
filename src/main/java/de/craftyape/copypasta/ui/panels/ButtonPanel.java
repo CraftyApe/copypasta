@@ -6,12 +6,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
+import java.util.List;
 
 public class ButtonPanel extends ParentPanel {
 
     private final transient Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 
-    public ButtonPanel(Pasta[] pastas) {
+    public ButtonPanel(List<Pasta> pastas) {
         this.setLayout(new GridLayout(5, 5));
         this.pastas = pastas;
         initComponents();

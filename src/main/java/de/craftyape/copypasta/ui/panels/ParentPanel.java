@@ -7,11 +7,12 @@ import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
 public class ParentPanel extends JPanel {
     protected transient SceneChangeListener sceneChangeListener;
     protected static final Logger LOG = LogManager.getLogger(ParentPanel.class.getName());
-    protected Pasta[] pastas;
+    protected List<Pasta> pastas;
 
     protected final Font fontPlain24 = new Font("Tahoma", Font.PLAIN, 24);
     protected GridBagConstraints gridBagConstraints;
