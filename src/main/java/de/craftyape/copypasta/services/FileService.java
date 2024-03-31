@@ -1,6 +1,7 @@
 package de.craftyape.copypasta.services;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import de.craftyape.copypasta.entities.Pasta;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -14,7 +15,7 @@ import java.nio.file.Paths;
 public class FileService {
 
     Path filePath = Paths.get("pasta.json");
-    Gson gson = new Gson();
+    Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     protected static final Logger log = LogManager.getLogger();
 
