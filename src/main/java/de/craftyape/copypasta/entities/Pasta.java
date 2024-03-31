@@ -18,4 +18,12 @@ public class Pasta implements Serializable {
         this.title = "[not set]";
         this.text = "Default pasta from button " + position;
     }
+
+    public int getPosX() {
+        return (position - 1) % 5;
+    }
+
+    public int getPosY() {
+        return (position - 1) / 5;
+    }
 }

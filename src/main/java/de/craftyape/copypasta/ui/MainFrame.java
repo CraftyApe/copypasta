@@ -2,24 +2,39 @@ package de.craftyape.copypasta.ui;
 
 import de.craftyape.copypasta.entities.Pasta;
 import de.craftyape.copypasta.services.FileService;
+import de.craftyape.copypasta.ui.panels.ButtonPanel;
+import de.craftyape.copypasta.ui.panels.ConfigPanel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class MainFrame extends JFrame {
 
     private static final Logger LOG = LogManager.getLogger(MainFrame.class);
     private final JPanel mainPanel = new JPanel();
-    private JPanel configPanel;
+    private ButtonPanel buttonPanel;
+    private ConfigPanel configPanel;
+
+    private boolean switchToButtonPanel = false;
+    private boolean switchToConfigPanel = false;
+
     private Pasta[] pastas;
     private final transient FileService fileService = new FileService();
 
     public MainFrame() {
         reloadPasta();
         initComponents();
-        for (Pasta pasta : pastas) {
-            LOG.info(pasta.getText());
+        switchToButtonPanel = true;
+
+        if (switchToButtonPanel) {
+            switchToButtonPanel = false;
+            setButtonScene();
+        }
+        if (switchToConfigPanel) {
+            switchToConfigPanel = false;
+            setConfigScene();
         }
     }
 
@@ -80,9 +95,24 @@ public class MainFrame extends JFrame {
         mainPanel.repaint();
     }
 
-    interface SceneChangeListener {
-        default void switchToButtonPanel() {throw new UnsupportedOperationException("Invalid panel change!");}
-        default void switchToConfigPanel() {throw new UnsupportedOperationException("Invalid panel change!");}
+    public void setButtonScene() {
+        mainPanel.removeAll();
+        buttonPanel = new ButtonPanel(pastas);
+        buttonPanel.addListener(new SceneChangeListener() {
+            @Override
+            public void switchToConfigPanel() {
+                buttonPanel.removeListener();
+                switchToConfigPanel = true;
+            }
+        });
+        mainPanel.setLayout(new GridLayout(1, 1));
+        mainPanel.add(buttonPanel);
+        mainPanel.revalidate();
+        mainPanel.repaint();
+    }
+
+    public void setConfigScene() {
+        // blergh
     }
 
 }
