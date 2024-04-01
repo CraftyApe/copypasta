@@ -8,9 +8,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.util.Objects;
 
 public class CopypastaApplication {
 
@@ -18,17 +16,10 @@ public class CopypastaApplication {
 	private static final Logger LOG = LogManager.getLogger(CopypastaApplication.class);
     private static Image icon;
 
-	CopypastaApplication(String[] args) {
-		// Initialize by loading json if it exists, otherwise set default pasta[]
-	}
-
-	public void show() {
-		// show UI
-	}
-
 	public static void main(final String[] args) {
 
 		setIcon();
+		LOG.info("Icon {}.", icon != null ? "successfully loaded" : "could not be loaded");
 
 		showStartupDialog();
 
@@ -64,12 +55,12 @@ public class CopypastaApplication {
 	}
 
 	private static void setIcon() {
-		Path iconPath = Paths.get("src/main/resources/icon.png");
 		try {
-			icon = ImageIO.read(Files.newInputStream(iconPath));
-		} catch (IOException ioException) {
-			LOG.warn("Icon could not be loaded. {}", ioException.getMessage());
+			icon = ImageIO.read(Objects.requireNonNull(CopypastaApplication.class
+					.getClassLoader().getResource("icon.png")));
+		} catch (IOException | NullPointerException e) {
+			LOG.warn("{}: {}",e.getClass() , e.getMessage());
 		}
-	}
+    }
 
 }
