@@ -121,7 +121,6 @@ public class MainFrame extends JFrame {
     public void setConfigScene() {
         mainPanel.removeAll();
         ConfigPanel configPanel = new ConfigPanel(pastas);
-        currentPanel = CurrentPanel.CONFIG;
         refreshMainPanel(configPanel);
         currentPanel = CurrentPanel.CONFIG;
     }
