@@ -14,7 +14,8 @@ public class ParentPanel extends JPanel {
     protected static final Logger LOG = LogManager.getLogger(ParentPanel.class.getName());
     protected transient List<Pasta> pastas;
 
-    protected final Font fontPlain24 = new Font("Tahoma", Font.BOLD, 24);
+    protected final Font fontBold18 = new Font("Tahoma", Font.BOLD, 18);
+    protected final Font fontPlain12 = new Font("Tahoma", Font.PLAIN, 12);
     protected GridBagConstraints gridBagConstraints;
 
     public void addListener(SceneChangeListener l) {sceneChangeListener = l;}

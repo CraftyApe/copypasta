@@ -1,5 +1,6 @@
 package de.craftyape.copypasta;
 
+import com.formdev.flatlaf.FlatDarculaLaf;
 import de.craftyape.copypasta.ui.MainFrame;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,7 +19,9 @@ public class CopypastaApplication {
 
 	public static void main(final String[] args) {
 
-		setIcon();
+		FlatDarculaLaf.setup();
+
+        setIcon();
 		LOG.info("Icon {}.", icon != null ? "successfully loaded" : "could not be loaded");
 
 		showStartupDialog();
@@ -33,7 +36,6 @@ public class CopypastaApplication {
 		mainframe.setSize(1280, 720);
 		mainframe.setIconImage(icon);
 		mainframe.setLocationRelativeTo(null);
-		mainframe.setBackground(Color.GRAY);
 		mainframe.setVisible(true);
 		mainframe.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 

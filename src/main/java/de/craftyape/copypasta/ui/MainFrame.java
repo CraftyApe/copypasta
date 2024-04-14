@@ -1,5 +1,7 @@
 package de.craftyape.copypasta.ui;
 
+import com.formdev.flatlaf.FlatDarculaLaf;
+import com.formdev.flatlaf.FlatLightLaf;
 import de.craftyape.copypasta.entities.Pasta;
 import de.craftyape.copypasta.services.FileService;
 import de.craftyape.copypasta.ui.panels.ButtonPanel;
@@ -14,10 +16,9 @@ public class MainFrame extends JFrame {
 
     private final JPanel mainPanel = new JPanel();
     private ButtonPanel buttonPanel;
+    private ConfigPanel configPanel;
     private CurrentPanel currentPanel;
-
-    private boolean switchToButtonPanel = false;
-    private boolean switchToConfigPanel = false;
+    private CurrentLaf currentLaf;
 
     private List<Pasta> pastas;
     private final transient FileService fileService = new FileService();
@@ -28,6 +29,10 @@ public class MainFrame extends JFrame {
 
 
     private void initComponents() {
+        if (currentPanel == null) {
+            currentPanel = CurrentPanel.BUTTONS;
+        }
+
         JMenuBar menuBar = new JMenuBar();
 
         JMenu menuFile = new JMenu();
@@ -36,9 +41,9 @@ public class MainFrame extends JFrame {
         JPopupMenu.Separator menuSeparator = new JPopupMenu.Separator();
         JMenuItem exit = new JMenuItem();
 
-        JMenu menuView = new JMenu();
-        JMenuItem buttons = new JMenuItem();
-        JMenuItem config = new JMenuItem();
+        JMenuItem lafToggle = new JMenuItem();
+        JMenuItem menuSceneToggle = new JMenuItem();
+
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setTitle("CopyPasta");
@@ -63,18 +68,43 @@ public class MainFrame extends JFrame {
         menuFile.add(menuSeparator);
         menuFile.add(exit);
 
-        // View menu
-        menuView.setText("View");
-        buttons.setText("Buttons");
-        buttons.addActionListener(e -> setButtonScene());
-        config.setText("Configuration");
-        config.addActionListener(e -> setConfigScene());
-        if (currentPanel != CurrentPanel.BUTTONS) {menuView.add(buttons);}
-        if (currentPanel != CurrentPanel.CONFIG) {menuView.add(config);}
+        // Look-and-feel toogle
+        if (currentLaf == null) {currentLaf = CurrentLaf.DARK;}
+        if (currentLaf == CurrentLaf.DARK) {
+            lafToggle.removeAll();
+            lafToggle.setText("LIGHT MODE");
+            lafToggle.addActionListener(e -> {
+                FlatLightLaf.setup();
+                currentLaf = CurrentLaf.LIGHT;
+                reloadPasta();
+            });
+        }
+        if (currentLaf == CurrentLaf.LIGHT) {
+            lafToggle.removeAll();
+            lafToggle.setText("DARK MODE");
+            lafToggle.addActionListener(e -> {
+                FlatDarculaLaf.setup();
+                currentLaf = CurrentLaf.DARK;
+                reloadPasta();
+            });
+        }
+
+        // Scene toggle
+        if (currentPanel == CurrentPanel.BUTTONS) {
+            menuSceneToggle.removeAll();
+            menuSceneToggle.setText("CONFIG");
+            menuSceneToggle.addActionListener(e -> setConfigScene());
+        }
+        if (currentPanel == CurrentPanel.CONFIG) {
+            menuSceneToggle.removeAll();
+            menuSceneToggle.setText("BUTTONS");
+            menuSceneToggle.addActionListener(e -> setButtonScene());
+        }
 
         // set Menu bar
         menuBar.add(menuFile);
-        menuBar.add(menuView);
+        menuBar.add(lafToggle);
+        menuBar.add(menuSceneToggle);
         setJMenuBar(menuBar);
 
         // set Layout and show mainPanel
@@ -93,14 +123,10 @@ public class MainFrame extends JFrame {
 
     private void reloadPasta() {
         pastas = fileService.loadAllPasta();
-        initComponents();
-        if (!switchToButtonPanel && !switchToConfigPanel) {switchToButtonPanel = true;}
-        if (switchToButtonPanel) {
-            switchToButtonPanel = false;
+        if (currentPanel == CurrentPanel.BUTTONS || currentPanel == null) {
             setButtonScene();
         }
-        if (switchToConfigPanel) {
-            switchToConfigPanel = false;
+        if (currentPanel == CurrentPanel.CONFIG) {
             setConfigScene();
         }
     }
@@ -111,18 +137,26 @@ public class MainFrame extends JFrame {
             @Override
             public void switchToConfigPanel() {
                 buttonPanel.removeListener();
-                switchToConfigPanel = true;
+                currentPanel = CurrentPanel.CONFIG;
             }
         });
-        refreshMainPanel(buttonPanel);
         currentPanel = CurrentPanel.BUTTONS;
+        initComponents();
+        refreshMainPanel(buttonPanel);
     }
 
     public void setConfigScene() {
-        mainPanel.removeAll();
-        ConfigPanel configPanel = new ConfigPanel(pastas);
-        refreshMainPanel(configPanel);
+        configPanel = new ConfigPanel(pastas);
+        configPanel.addListener(new SceneChangeListener() {
+            @Override
+            public void switchToButtonPanel() {
+                configPanel.removeListener();
+                currentPanel = CurrentPanel.BUTTONS;
+            }
+        });
         currentPanel = CurrentPanel.CONFIG;
+        initComponents();
+        refreshMainPanel(configPanel);
     }
 
     public void refreshMainPanel(ParentPanel panel) {
