@@ -20,14 +20,11 @@ public class ConfigPanel extends ParentPanel {
     }
 
     private void initComponents() {
-        Dimension titleSize = new Dimension(180, 28);
-        Dimension textSize = new Dimension(1100, 28);
 
         for (Pasta pasta : pastas) {
 
             // title field
             JTextField titleField = new JTextField(pasta.getTitle());
-            titleField.setMinimumSize(titleSize);
             titleField.getDocument().addDocumentListener(new DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
@@ -53,7 +50,6 @@ public class ConfigPanel extends ParentPanel {
 
             // text field
             JTextField textField = new JTextField(pasta.getText());
-            textField.setMinimumSize(textSize);
             textField.getDocument().addDocumentListener(new DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
@@ -71,19 +67,25 @@ public class ConfigPanel extends ParentPanel {
                 }
             });
 
-            titleField.setMargin(new Insets(0,0,0,0));
+            // Sizing and positioning them
+            titleField.setMargin(new Insets(0,4,0,4));
             titleField.setHorizontalAlignment(SwingConstants.LEFT);
             titleField.setFont(fontPlain12);
             setConstraints(0, pasta.getPosition() - 1);
             gridBagConstraints.weightx = 0.2;
+            gridBagConstraints.weighty = 0.04;
             gridBagConstraints.insets = new Insets(0,0,-2,0);
+            gridBagConstraints.fill = GridBagConstraints.BOTH;
             add(titleField, gridBagConstraints);
-            textField.setMargin(new Insets(0,0,0,0));
+            textField.setMargin(new Insets(0,4,0,4));
             textField.setHorizontalAlignment(SwingConstants.LEFT);
             textField.setFont(fontPlain12);
+            textField.setCaretPosition(0);
             setConstraints(1, pasta.getPosition() - 1);
             gridBagConstraints.weightx = 0.8;
+            gridBagConstraints.weighty = 0.04;
             gridBagConstraints.insets = new Insets(0,0,-2,0);
+            gridBagConstraints.fill = GridBagConstraints.BOTH;
             add(textField, gridBagConstraints);
         }
 

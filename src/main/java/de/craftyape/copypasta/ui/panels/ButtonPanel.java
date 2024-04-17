@@ -21,24 +21,19 @@ public class ButtonPanel extends ParentPanel {
 
     private void initComponents() {
 
-        Dimension buttonSize = new Dimension(160, 120);
-
         for (Pasta pasta : pastas) {
             JButton jButton = new JButton(pasta.getTitle());
             jButton.setFont(fontBold18);
             jButton.addActionListener(e -> buttonClicked(pasta));
-            jButton.setPreferredSize(buttonSize);
-            jButton.setMaximumSize(buttonSize);
             setConstraints(pasta.getPosX(), pasta.getPosY());
             gridBagConstraints.weightx = .2;
             gridBagConstraints.weighty = .2;
+            gridBagConstraints.fill = GridBagConstraints.BOTH;
             add(jButton, gridBagConstraints);
         }
     }
 
     private void buttonClicked(Pasta pasta) {
         clipboard.setContents(new StringSelection(pasta.getText()), null);
-        LOG.info("{} - position: ({}, {})", pasta.getText(), pasta.getPosX(), pasta.getPosY());
     }
-
 }
