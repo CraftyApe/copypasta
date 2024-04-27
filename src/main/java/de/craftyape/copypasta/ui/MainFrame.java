@@ -27,7 +27,6 @@ public class MainFrame extends JFrame {
         reloadPasta();
     }
 
-
     private void initComponents() {
         if (currentPanel == null) {
             currentPanel = CurrentPanel.BUTTONS;

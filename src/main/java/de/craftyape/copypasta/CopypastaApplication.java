@@ -13,7 +13,7 @@ import java.util.Objects;
 
 public class CopypastaApplication {
 
-	private static final JDialog dialog = new JDialog();
+	private static final JDialog startUpDialog = new JDialog();
 	private static final Logger LOG = LogManager.getLogger(CopypastaApplication.class);
     private static Image icon;
 
@@ -31,29 +31,29 @@ public class CopypastaApplication {
 			System.exit(0);
 		});
 
-		dialog.dispose();
         MainFrame mainframe = new MainFrame();
 		mainframe.setSize(1280, 720);
 		mainframe.setIconImage(icon);
 		mainframe.setLocationRelativeTo(null);
 		mainframe.setVisible(true);
 		mainframe.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		startUpDialog.dispose();
 
 	}
 
 	private static void showStartupDialog() {
 		JOptionPane jOptionPane = new JOptionPane("Starting...", JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, null, new Object[]{}, null);
 
-		dialog.setTitle("Start");
-		dialog.setModal(true);
-		dialog.setContentPane(jOptionPane);
-		dialog.setIconImage(icon);
-		dialog.setBackground(Color.GRAY);
-		dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-		dialog.pack();
-		dialog.setLocationRelativeTo(null);
+		startUpDialog.setTitle("Start");
+		startUpDialog.setModal(true);
+		startUpDialog.setContentPane(jOptionPane);
+		startUpDialog.setIconImage(icon);
+		startUpDialog.setBackground(Color.GRAY);
+		startUpDialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+		startUpDialog.pack();
+		startUpDialog.setLocationRelativeTo(null);
 
-		SwingUtilities.invokeLater(() -> dialog.setVisible(true));
+		SwingUtilities.invokeLater(() -> startUpDialog.setVisible(true));
 	}
 
 	private static void setIcon() {
