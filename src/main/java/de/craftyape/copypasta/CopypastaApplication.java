@@ -32,7 +32,7 @@ public class CopypastaApplication {
 		});
 
         MainFrame mainframe = new MainFrame();
-		mainframe.setSize(1280, 720);
+		mainframe.setSize(1280, 834);
 		mainframe.setIconImage(icon);
 		mainframe.setLocationRelativeTo(null);
 		mainframe.setVisible(true);

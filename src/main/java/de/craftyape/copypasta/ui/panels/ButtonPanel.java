@@ -13,8 +13,8 @@ public class ButtonPanel extends ParentPanel {
     private final transient Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 
     public ButtonPanel(List<Pasta> pastas) {
-        this.setMaximumSize(new Dimension(1280, 720));
-        this.setLayout(new GridLayout(5, 5));
+        this.setMaximumSize(new Dimension(1280, 834));
+        this.setLayout(new GridLayout(6, 5));
         this.pastas = pastas;
         initComponents();
     }
@@ -26,8 +26,8 @@ public class ButtonPanel extends ParentPanel {
             jButton.setFont(fontBold18);
             jButton.addActionListener(e -> buttonClicked(pasta));
             setConstraints(pasta.getPosX(), pasta.getPosY());
-            gridBagConstraints.weightx = .2;
-            gridBagConstraints.weighty = .2;
+            gridBagConstraints.weightx = 1d/5;
+            gridBagConstraints.weighty = 1d/6;
             gridBagConstraints.fill = GridBagConstraints.BOTH;
             add(jButton, gridBagConstraints);
         }

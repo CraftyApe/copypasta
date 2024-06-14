@@ -14,6 +14,7 @@ public class ConfigPanel extends ParentPanel {
 
 
     public ConfigPanel(List<Pasta> pastas) {
+        this.setMaximumSize(new Dimension(1280, 1200));
         this.setLayout(new GridBagLayout());
         this.pastas = pastas;
         initComponents();
@@ -73,7 +74,7 @@ public class ConfigPanel extends ParentPanel {
             titleField.setFont(fontPlain12);
             setConstraints(0, pasta.getPosition() - 1);
             gridBagConstraints.weightx = 0.2;
-            gridBagConstraints.weighty = 0.04;
+            gridBagConstraints.weighty = 1d/30;
             gridBagConstraints.insets = new Insets(0,0,-2,0);
             gridBagConstraints.fill = GridBagConstraints.BOTH;
             add(titleField, gridBagConstraints);
@@ -83,7 +84,7 @@ public class ConfigPanel extends ParentPanel {
             textField.setCaretPosition(0);
             setConstraints(1, pasta.getPosition() - 1);
             gridBagConstraints.weightx = 0.8;
-            gridBagConstraints.weighty = 0.04;
+            gridBagConstraints.weighty = 1d/30;
             gridBagConstraints.insets = new Insets(0,0,-2,0);
             gridBagConstraints.fill = GridBagConstraints.BOTH;
             add(textField, gridBagConstraints);

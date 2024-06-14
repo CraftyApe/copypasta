@@ -25,7 +25,7 @@ public class FileService {
         try {
             return Arrays.asList(gson.fromJson(Files.readString(filePath, StandardCharsets.UTF_8), Pasta[].class));
         } catch (IOException e) {
-            Pasta[] defaultPastas = new Pasta[25];
+            Pasta[] defaultPastas = new Pasta[30];
             for (int i = 0; i < defaultPastas.length; i++) {
                 defaultPastas[i] = new Pasta(i + 1);
             }
