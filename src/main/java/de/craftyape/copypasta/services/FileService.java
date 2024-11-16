@@ -3,8 +3,7 @@ package de.craftyape.copypasta.services;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import de.craftyape.copypasta.entities.Pasta;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -14,12 +13,11 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 
+@Slf4j
 public class FileService {
 
     Path filePath = Paths.get("pasta.json");
     Gson gson = new GsonBuilder().setPrettyPrinting().create();
-
-    protected static final Logger log = LogManager.getLogger();
 
     public List<Pasta> loadAllPasta() {
         try {

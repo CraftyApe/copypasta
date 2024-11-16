@@ -2,8 +2,7 @@ package de.craftyape.copypasta;
 
 import com.formdev.flatlaf.FlatDarculaLaf;
 import de.craftyape.copypasta.ui.MainFrame;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -11,10 +10,10 @@ import java.awt.*;
 import java.io.IOException;
 import java.util.Objects;
 
+@Slf4j
 public class CopypastaApplication {
 
 	private static final JDialog startUpDialog = new JDialog();
-	private static final Logger LOG = LogManager.getLogger(CopypastaApplication.class);
     private static Image icon;
 
 	public static void main(final String[] args) {
@@ -22,12 +21,12 @@ public class CopypastaApplication {
 		FlatDarculaLaf.setup();
 
         setIcon();
-		LOG.info("Icon {}.", icon != null ? "successfully loaded" : "could not be loaded");
+		log.info("Icon {}.", icon != null ? "successfully loaded" : "could not be loaded");
 
 		showStartupDialog();
 
 		Thread.currentThread().setUncaughtExceptionHandler((e, t) -> {
-			LOG.error("Error on startup! {}", t.getMessage());
+			log.error("Error on startup! {}", t.getMessage());
 			System.exit(0);
 		});
 
@@ -39,7 +38,10 @@ public class CopypastaApplication {
 		mainframe.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		startUpDialog.dispose();
 
-	}
+		// bring to front
+		mainframe.toFront();
+		mainframe.requestFocus();
+    }
 
 	private static void showStartupDialog() {
 		JOptionPane jOptionPane = new JOptionPane("Starting...", JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, null, new Object[]{}, null);
@@ -61,7 +63,7 @@ public class CopypastaApplication {
 			icon = ImageIO.read(Objects.requireNonNull(CopypastaApplication.class
 					.getClassLoader().getResource("icon.png")));
 		} catch (IOException | NullPointerException e) {
-			LOG.warn("{}: {}",e.getClass() , e.getMessage());
+			log.warn("{}: {}",e.getClass() , e.getMessage());
 		}
     }
 

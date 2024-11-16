@@ -24,6 +24,8 @@ public class MainFrame extends JFrame {
     private final transient FileService fileService = new FileService();
 
     public MainFrame() {
+        this.setResizable(false);
+        this.getForeground();
         reloadPasta();
     }
 
@@ -67,7 +69,7 @@ public class MainFrame extends JFrame {
         menuFile.add(menuSeparator);
         menuFile.add(exit);
 
-        // Look-and-feel toogle
+        // Look-and-feel toggle
         if (currentLaf == null) {currentLaf = CurrentLaf.DARK;}
         if (currentLaf == CurrentLaf.DARK) {
             lafToggle.removeAll();
@@ -117,7 +119,6 @@ public class MainFrame extends JFrame {
                 layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addComponent(mainPanel, GroupLayout.Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-
     }
 
     private void reloadPasta() {
@@ -141,7 +142,7 @@ public class MainFrame extends JFrame {
         });
         currentPanel = CurrentPanel.BUTTONS;
         initComponents();
-        refreshMainPanel(buttonPanel);
+        refreshMainPanel(buttonPanel, false);
     }
 
     public void setConfigScene() {
@@ -155,15 +156,24 @@ public class MainFrame extends JFrame {
         });
         currentPanel = CurrentPanel.CONFIG;
         initComponents();
-        refreshMainPanel(configPanel);
+        refreshMainPanel(configPanel, true);
     }
 
-    public void refreshMainPanel(ParentPanel panel) {
+    public void refreshMainPanel(ParentPanel panel, boolean scrolling) {
         mainPanel.removeAll();
         mainPanel.setLayout(new GridLayout(1, 1));
-        mainPanel.add(panel);
+        mainPanel.add(scrolling ? wrapInScrollPane(panel) : panel);
         mainPanel.revalidate();
         mainPanel.repaint();
+    }
+
+    private JScrollPane wrapInScrollPane(Component component) {
+        JScrollPane scrollPane = new JScrollPane(component, 20, 30);
+        scrollPane.getHorizontalScrollBar().setUnitIncrement(15);
+        if (component instanceof ConfigPanel confPanel) {
+            scrollPane.getVerticalScrollBar().getUnitIncrement(confPanel.getScrollIncrement());
+        }
+        return scrollPane;
     }
 
 }
