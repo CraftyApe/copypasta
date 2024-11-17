@@ -2,6 +2,7 @@ package de.craftyape.copypasta.ui.panels;
 
 import de.craftyape.copypasta.entities.Pasta;
 import de.craftyape.copypasta.utility.LengthFilter;
+import de.craftyape.copypasta.utility.LineSpacingHighlighter;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
@@ -9,6 +10,7 @@ import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.AbstractDocument;
+import javax.swing.text.JTextComponent;
 import java.awt.*;
 import java.util.List;
 
@@ -19,7 +21,7 @@ public class ConfigPanel extends ParentPanel {
     int scrollIncrement;
 
     public ConfigPanel(List<Pasta> pastas) {
-        this.setSize(super.getSize());
+        this.setSize(new Dimension(super.getWidth(), 2 * super.getHeight()));
         this.setLayout(new GridBagLayout());
         this.pastas = pastas;
         initComponents();
@@ -30,8 +32,8 @@ public class ConfigPanel extends ParentPanel {
         for (Pasta pasta : pastas) {
 
             // title field
-            JTextField titleField = new JTextField(pasta.getTitle(), 20);
-            setCharacterLimit(titleField);
+            JTextField titleField = new JTextField(pasta.getTitle());
+            setCharacterLimit(titleField, 20);
             titleField.getDocument().addDocumentListener(new DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
@@ -48,28 +50,25 @@ public class ConfigPanel extends ParentPanel {
                     pasta.setTitle(titleField.getText());
                 }
             });
-            // TODO: Give title fields double height, make text fields JTextArea:
-            // JTextArea textArea = new JTextArea(10, 30);
-            // textArea.setLineWrap(true);
-            // textArea.setWrapStyleWord(true);
 
             // text field
-            JTextField textField = new JTextField(pasta.getText(), 240);
-            ((AbstractDocument) textField.getDocument()).setDocumentFilter(new LengthFilter(textField.getColumns()));
-            textField.getDocument().addDocumentListener(new DocumentListener() {
+            JTextArea textArea = new JTextArea(pasta.getText(), 2, 130);
+            setCharacterLimit(textArea, 240);
+
+            textArea.getDocument().addDocumentListener(new DocumentListener() {
                 @Override
                 public void insertUpdate(DocumentEvent e) {
-                    pasta.setText(textField.getText());
+                    pasta.setText(textArea.getText());
                 }
 
                 @Override
                 public void removeUpdate(DocumentEvent e) {
-                    pasta.setText(textField.getText());
+                    pasta.setText(textArea.getText());
                 }
 
                 @Override
                 public void changedUpdate(DocumentEvent e) {
-                    pasta.setText(textField.getText());
+                    pasta.setText(textArea.getText());
                 }
             });
 
@@ -83,15 +82,23 @@ public class ConfigPanel extends ParentPanel {
             gridBagConstraints.ipadx = 10;
             gridBagConstraints.fill = GridBagConstraints.BOTH;
             add(titleField, gridBagConstraints);
-            textField.setMargin(new Insets(0, 4, 0, 4));
-            textField.setHorizontalAlignment(SwingConstants.LEFT);
-            textField.setFont(fontPlain12);
-            textField.setCaretPosition(0);
+
+            textArea.setMargin(new Insets(0, 4, 0, 4));
+            textArea.setBorder(titleField.getBorder());
+            textArea.setLineWrap(true);
+            textArea.setWrapStyleWord(true);
+            int lineSpacing = 2;
+            LineSpacingHighlighter.setSpacing(textArea, lineSpacing);
+            textArea.setAlignmentX(SwingConstants.LEFT);
+            textArea.setAlignmentY(SwingConstants.CENTER);
+            textArea.setFont(fontPlain12);
+            textArea.setMinimumSize(new Dimension(this.getWidth() - titleField.getWidth(), 2 * textArea.getFont().getSize() + lineSpacing));
+            textArea.setCaretPosition(0);
             setConstraints(1, pasta.getPosition() - 1);
             gridBagConstraints.weighty = 1d/30;
             gridBagConstraints.insets = new Insets(0, 0, -2, 0);
             gridBagConstraints.fill = GridBagConstraints.BOTH;
-            add(textField, gridBagConstraints);
+            add(textArea, gridBagConstraints);
         }
         this.revalidate();
         this.repaint();
@@ -101,18 +108,11 @@ public class ConfigPanel extends ParentPanel {
             if (parentScrollPane != null) {
                 parentScrollPane.getVerticalScrollBar().setUnitIncrement(this.scrollIncrement);
             }
-            for (int i = 0; i < this.getComponents().length; i++) {
-                if (i%2==0) {
-                    JTextField titleField = (JTextField) this.getComponent(i);
-                    JTextField textField = (JTextField) this.getComponent(i+1);
-                    log.info("pasta: {}, title size: {}x{}, text size: {}x{}", titleField.getText(), titleField.getWidth(), titleField.getHeight(), textField.getWidth(), textField.getHeight());
-                }
-            }
         });
     }
 
-    private void setCharacterLimit(JTextField jTextField) {
-        ((AbstractDocument) jTextField.getDocument()).setDocumentFilter(new LengthFilter(jTextField.getColumns()));
+    private void setCharacterLimit(JTextComponent textComponent, int limit) {
+        ((AbstractDocument) textComponent.getDocument()).setDocumentFilter(new LengthFilter(limit));
     }
 
 }
