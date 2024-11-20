@@ -6,7 +6,10 @@
 3. Download the latest **<ins>JRE</ins>** release and install it / unpack it somewhere, depending on whether you picked the installer or archive.
    
 ## Run the app
-![alt text](https://github.com/CraftyApe/copypasta/blob/master/howto.png?raw=true)
+<a href="https://github.com/CraftyApe/copypasta/blob/master/howto.png?raw=true" target="_blank">
+    <img src="https://github.com/CraftyApe/copypasta/blob/master/howto.png?raw=true" alt="Screenshots showing the following steps 1-4">
+</a>
+
 ### Windows
 1. Create a shortcut to CopyPasta.jar
 2. Open the shortcut's properties *(see screenshot)*
