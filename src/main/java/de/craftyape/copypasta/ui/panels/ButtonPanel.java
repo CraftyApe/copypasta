@@ -13,7 +13,7 @@ public class ButtonPanel extends ParentPanel {
     private final transient Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 
     public ButtonPanel(List<Pasta> pastas) {
-        this.setMaximumSize(new Dimension(1280, 834));
+        this.setMaximumSize(super.getSize());
         this.setLayout(new GridLayout(6, 5));
         this.pastas = pastas;
         initComponents();
@@ -23,7 +23,7 @@ public class ButtonPanel extends ParentPanel {
 
         for (Pasta pasta : pastas) {
             JButton jButton = new JButton(pasta.getTitle());
-            jButton.setFont(fontBold18);
+            jButton.setFont(getFontBold18());
             jButton.addActionListener(e -> buttonClicked(pasta));
             setConstraints(pasta.getPosX(), pasta.getPosY());
             gridBagConstraints.weightx = 1d/5;

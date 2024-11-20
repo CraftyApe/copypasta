@@ -18,7 +18,7 @@ public class CopypastaApplication {
 
 	public static void main(final String[] args) {
 
-		FlatDarculaLaf.setup();
+        FlatDarculaLaf.setup();
 
         setIcon();
 		log.info("Icon {}.", icon != null ? "successfully loaded" : "could not be loaded");
@@ -26,7 +26,7 @@ public class CopypastaApplication {
 		showStartupDialog();
 
 		Thread.currentThread().setUncaughtExceptionHandler((e, t) -> {
-			log.error("Error on startup! {}", t.getMessage());
+			log.error("Error on startup! {}", t.getMessage(), t);
 			System.exit(0);
 		});
 

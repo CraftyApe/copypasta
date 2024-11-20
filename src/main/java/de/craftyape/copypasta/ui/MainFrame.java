@@ -168,7 +168,9 @@ public class MainFrame extends JFrame {
     }
 
     private JScrollPane wrapInScrollPane(Component component) {
-        JScrollPane scrollPane = new JScrollPane(component, 20, 30);
+        JScrollPane scrollPane = new JScrollPane(component,
+                ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+                ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         scrollPane.getHorizontalScrollBar().setUnitIncrement(15);
         if (component instanceof ConfigPanel confPanel) {
             scrollPane.getVerticalScrollBar().getUnitIncrement(confPanel.getScrollIncrement());
