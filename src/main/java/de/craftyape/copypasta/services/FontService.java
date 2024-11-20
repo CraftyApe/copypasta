@@ -1,4 +1,4 @@
-package de.craftyape.copypasta.utility;
+package de.craftyape.copypasta.services;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -7,12 +7,12 @@ import java.io.IOException;
 import java.io.InputStream;
 
 @Slf4j
-public class FontUtils {
+public class FontService {
 
-    private FontUtils() {}
+    private FontService() {}
 
     public static Font loadFont(String path, float size) {
-        try (InputStream inputStream = FontUtils.class.getResourceAsStream(path)) {
+        try (InputStream inputStream = FontService.class.getResourceAsStream(path)) {
             if (inputStream != null) {
                 Font font = Font.createFont(Font.TRUETYPE_FONT, inputStream).deriveFont(size);
                 GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(font);

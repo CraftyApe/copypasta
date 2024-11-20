@@ -4,6 +4,8 @@ import com.formdev.flatlaf.FlatDarculaLaf;
 import com.formdev.flatlaf.FlatLightLaf;
 import de.craftyape.copypasta.entities.Pasta;
 import de.craftyape.copypasta.services.FileService;
+import de.craftyape.copypasta.ui.enums.CurrentLaf;
+import de.craftyape.copypasta.ui.enums.CurrentPanel;
 import de.craftyape.copypasta.ui.panels.ButtonPanel;
 import de.craftyape.copypasta.ui.panels.ConfigPanel;
 import de.craftyape.copypasta.ui.panels.ParentPanel;

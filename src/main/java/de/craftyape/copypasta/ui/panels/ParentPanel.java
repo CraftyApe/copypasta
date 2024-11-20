@@ -1,8 +1,8 @@
 package de.craftyape.copypasta.ui.panels;
 
 import de.craftyape.copypasta.entities.Pasta;
+import de.craftyape.copypasta.services.FontService;
 import de.craftyape.copypasta.ui.SceneChangeListener;
-import de.craftyape.copypasta.utility.FontUtils;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
@@ -53,7 +53,7 @@ public class ParentPanel extends JPanel {
     }
 
     protected void loadCustomFonts() {
-        fontBold14 = FontUtils.loadFont(FONT_MEDIUM_PATH, 14);
-        fontBold18 = FontUtils.loadFont(FONT_BOLD_PATH, 18);
+        fontBold14 = FontService.loadFont(FONT_MEDIUM_PATH, 14);
+        fontBold18 = FontService.loadFont(FONT_BOLD_PATH, 18);
     }
 }
