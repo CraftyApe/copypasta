@@ -24,21 +24,29 @@ public class FileService {
     Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     private void getFilePath() {
-
         String classPath = CopypastaApplication.class.getName().replace('.', '/') + ".class";
         URL classURL = CopypastaApplication.class.getClassLoader().getResource(classPath);
 
         String fileName = "pasta.json";
         if (classURL != null) {
             try {
-                // Remove leading "/" and everything after main p
-                String path = classURL.toURI().getPath().substring(1, classURL.toURI().getPath().indexOf("classes/"));
-                filePath = Paths.get(path + fileName).toAbsolutePath();
+                // Remove leading "/" and get the path up to before "classes/"
+                String path = classURL.toURI().getPath();
+                if (path != null) {
+                    path = path.substring(1, path.indexOf("classes/"));
+                    filePath = Paths.get(path + fileName).toAbsolutePath();
+                    log.info("Computed file path: {}", filePath);
+                } else {
+                    log.warn("Path component of URI is null. Falling back to working directory.");
+                }
             } catch (URISyntaxException e) {
                 log.error("Error loading absolute file path, using working directory.", e);
             }
         }
-        filePath = Paths.get(fileName);
+        // Fallback to working directory if classURL is null or path is not set
+        if (filePath == null) {
+            filePath = Paths.get(fileName).toAbsolutePath();
+        }
     }
 
     public List<Pasta> loadAllPasta() {
@@ -54,17 +62,23 @@ public class FileService {
             for (int i = 0; i < defaultPastas.length; i++) {
                 defaultPastas[i] = new Pasta(i + 1);
             }
-            log.warn("File not found!");
+            log.warn("File not found! Returning default pasta list.");
             return Arrays.asList(defaultPastas);
         }
     }
 
     public void saveAllPasta(List<Pasta> pastas) {
+        if (filePath == null) {
+            getFilePath();
+            log.info("Save path of pasta: {}", filePath);
+        }
+
         try {
             String jsonArray = gson.toJson(pastas);
             Files.writeString(filePath, jsonArray);
+            log.info("Pasta saved successfully to {}", filePath);
         } catch (IOException e) {
-            log.warn("Error while saving pasta!");
+            log.warn("Error while saving pasta!", e);
         }
     }
 }

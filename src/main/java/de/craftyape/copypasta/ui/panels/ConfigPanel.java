@@ -30,7 +30,7 @@ public class ConfigPanel extends ParentPanel {
         for (Pasta pasta : pastas) {
 
             // title field
-            JTextField titleField = new JTextField(pasta.getTitle());
+            JTextField titleField = new JTextField(pasta.getTitle(), 20);
             setCharacterLimit(titleField, 20);
             titleField.getDocument().addDocumentListener(new DocumentListener() {
                 @Override
@@ -71,13 +71,13 @@ public class ConfigPanel extends ParentPanel {
             });
 
             // Sizing and positioning them
-            titleField.setMargin(new Insets(5, 4, 5, 1));
+            titleField.setMargin(new Insets(5, 5, 5, 3));
             titleField.setHorizontalAlignment(SwingConstants.LEFT);
             titleField.setFont(getFontBold14());
             setConstraints(0, pasta.getPosition() - 1);
             gridBagConstraints.weighty = 1d/30;
             gridBagConstraints.insets = new Insets(0, 0, -2, 0);
-            gridBagConstraints.ipadx = 10;
+            gridBagConstraints.ipadx = 15;
             gridBagConstraints.fill = GridBagConstraints.BOTH;
             add(titleField, gridBagConstraints);
 
@@ -105,6 +105,7 @@ public class ConfigPanel extends ParentPanel {
                 parentScrollPane.getVerticalScrollBar().setUnitIncrement(this.scrollIncrement);
             }
         });
+        log.info("ConfigPanel initialized.");
     }
 
     private void setCharacterLimit(JTextComponent textComponent, int limit) {
