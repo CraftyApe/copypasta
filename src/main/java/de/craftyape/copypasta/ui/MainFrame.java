@@ -12,6 +12,8 @@ import de.craftyape.copypasta.ui.panels.ParentPanel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.List;
 
 public class MainFrame extends JFrame {
@@ -28,6 +30,7 @@ public class MainFrame extends JFrame {
     public MainFrame() {
         this.setResizable(false);
         this.getForeground();
+        addCloseDialog();
         reloadPasta();
     }
 
@@ -47,8 +50,6 @@ public class MainFrame extends JFrame {
         JMenuItem lafToggle = new JMenuItem();
         JMenuItem menuSceneToggle = new JMenuItem();
 
-
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setTitle("CopyPasta");
 
         GroupLayout mainPanelLayout = new GroupLayout(mainPanel);
@@ -65,7 +66,7 @@ public class MainFrame extends JFrame {
         save.setText("Save");
         save.addActionListener(e -> fileService.saveAllPasta(pastas));
         exit.setText("Exit");
-        exit.addActionListener(e -> System.exit(0));
+        exit.addActionListener(e -> dispatchEvent(new WindowEvent(MainFrame.this, WindowEvent.WINDOW_CLOSING)));
         menuFile.add(load);
         menuFile.add(save);
         menuFile.add(menuSeparator);
@@ -172,12 +173,32 @@ public class MainFrame extends JFrame {
     private JScrollPane wrapInScrollPane(Component component) {
         JScrollPane scrollPane = new JScrollPane(component,
                 ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
-                ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        scrollPane.getHorizontalScrollBar().setUnitIncrement(15);
+                ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         if (component instanceof ConfigPanel confPanel) {
             scrollPane.getVerticalScrollBar().getUnitIncrement(confPanel.getScrollIncrement());
         }
         return scrollPane;
+    }
+
+    private void addCloseDialog() {
+        setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                if (pastas.equals(fileService.loadAllPasta())) {
+                    System.exit(0); // if no unsaved changes, just close
+                }
+                String dialogMessage = "There are unsaved changes.\n" +
+                        "Do you want to save before closing?";
+                int confirm = JOptionPane.showConfirmDialog(MainFrame.this, dialogMessage, "Confirm quit", JOptionPane.YES_NO_CANCEL_OPTION);
+                if (confirm == JOptionPane.YES_OPTION) {
+                    fileService.saveAllPasta(pastas);
+                    System.exit(0);
+                } else if (confirm == JOptionPane.NO_OPTION) {
+                    System.exit(0);
+                }
+            }
+        });
     }
 
 }

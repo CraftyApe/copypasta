@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 @Getter @Setter @AllArgsConstructor
 public class Pasta implements Serializable {
@@ -25,5 +26,17 @@ public class Pasta implements Serializable {
 
     public int getPosY() {
         return (position - 1) / 5;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Pasta other = (Pasta) o;
+        return position == other.position && Objects.equals(title, other.title) && Objects.equals(text, other.text);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(position, title, text);
     }
 }
