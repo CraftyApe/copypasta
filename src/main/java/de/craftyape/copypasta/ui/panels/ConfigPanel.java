@@ -74,11 +74,9 @@ public class ConfigPanel extends ParentPanel {
             titleField.setMargin(new Insets(5, 5, 5, 3));
             titleField.setHorizontalAlignment(SwingConstants.LEFT);
             titleField.setFont(getFontBold14());
-            setConstraints(0, pasta.getPosition() - 1);
+            setConstraints(0, pasta.getPosition() - 1, true);
             gridBagConstraints.weighty = 1d/30;
-            gridBagConstraints.insets = new Insets(0, 0, -2, 0);
             gridBagConstraints.ipadx = 15;
-            gridBagConstraints.fill = GridBagConstraints.BOTH;
             add(titleField, gridBagConstraints);
 
             textArea.setMargin(new Insets(2, 5, 2, 5));
@@ -89,26 +87,28 @@ public class ConfigPanel extends ParentPanel {
             textArea.setAlignmentY(SwingConstants.CENTER);
             textArea.setFont(getFontBold14());
             textArea.setCaretPosition(0);
-            setConstraints(1, pasta.getPosition() - 1);
+            setConstraints(1, pasta.getPosition() - 1, true);
             gridBagConstraints.weighty = 1d/30;
-            gridBagConstraints.insets = new Insets(0, 0, -2, 0);
-            gridBagConstraints.fill = GridBagConstraints.BOTH;
             add(textArea, gridBagConstraints);
         }
         this.revalidate();
         this.repaint();
-        EventQueue.invokeLater(() -> {
-            JScrollPane parentScrollPane = (JScrollPane) SwingUtilities.getAncestorOfClass(JScrollPane.class, this);
-            this.scrollIncrement = this.getComponent(0).getFont().getSize()-5;
-            if (parentScrollPane != null) {
-                parentScrollPane.getVerticalScrollBar().setValue(0);
-                parentScrollPane.getVerticalScrollBar().setUnitIncrement(this.scrollIncrement);
-            }
-        });
+        setupVerticalScrolling();
         log.info("ConfigPanel initialized.");
     }
 
     private void setCharacterLimit(JTextComponent textComponent, int limit) {
         ((AbstractDocument) textComponent.getDocument()).setDocumentFilter(new LengthFilter(limit));
+    }
+
+    private void setupVerticalScrolling() {
+        EventQueue.invokeLater(() -> {
+            JScrollPane parentScrollPane = (JScrollPane) SwingUtilities.getAncestorOfClass(JScrollPane.class, this);
+            this.scrollIncrement = this.getComponent(0).getFont().getSize()+1;
+            if (parentScrollPane != null) {
+                parentScrollPane.getVerticalScrollBar().setValue(0);
+                parentScrollPane.getVerticalScrollBar().setUnitIncrement(this.scrollIncrement);
+            }
+        });
     }
 }

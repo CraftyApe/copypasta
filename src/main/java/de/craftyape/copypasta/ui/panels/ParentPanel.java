@@ -36,6 +36,14 @@ public class ParentPanel extends JPanel {
         gridBagConstraints.gridx = gridX;
         gridBagConstraints.gridy = gridY;
         gridBagConstraints.anchor = GridBagConstraints.CENTER;
+        gridBagConstraints.fill = GridBagConstraints.BOTH;
+    }
+
+    protected void setConstraints(int gridX, int gridY, boolean tableRow) {
+        setConstraints(gridX, gridY);
+        if (tableRow) {
+            gridBagConstraints.insets = new Insets(-2, 0, -2, 0);
+        }
     }
 
     protected Font getFontBold14() {

@@ -28,7 +28,6 @@ public class ButtonPanel extends ParentPanel {
             setConstraints(pasta.getPosX(), pasta.getPosY());
             gridBagConstraints.weightx = 1d/5;
             gridBagConstraints.weighty = 1d/6;
-            gridBagConstraints.fill = GridBagConstraints.BOTH;
             add(jButton, gridBagConstraints);
         }
     }
