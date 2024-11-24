@@ -31,11 +31,10 @@ public class CopypastaApplication {
 		});
 
         MainFrame mainframe = new MainFrame();
-		mainframe.setSize(1280, 834);
+		mainframe.setSize(1280, 720);
 		mainframe.setIconImage(icon);
 		mainframe.setLocationRelativeTo(null);
 		mainframe.setVisible(true);
-		mainframe.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		startUpDialog.dispose();
 
 		// bring to front

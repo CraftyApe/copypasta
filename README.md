@@ -1,10 +1,10 @@
 # <img src="https://github.com/CraftyApe/copypasta/blob/master/copypasta-icon.ico?raw=true" width=48 />HOW TO
 ###### *I'm not turning this into an exe file too keep it OS-independent.*
-## Preparation:
+## Preparation
 >Get Java 17 here: [https://www.openlogic.com/openjdk-downloads](https://www.openlogic.com/openjdk-downloads?field_java_parent_version_target_id=807&field_architecture_target_id=391&field_java_package_target_id=401)  
 Select your operating system, the link should fill out the rest.  
 Download the latest **<ins>JRE</ins>** release and install it / unpack it somewhere, depending on whether you picked the installer or archive.
-   
+
 ## Run the app
 ### Windows
 <a href="https://github.com/CraftyApe/copypasta/blob/master/howto.png" target="_blank">
@@ -13,8 +13,8 @@ Download the latest **<ins>JRE</ins>** release and install it / unpack it somewh
 
 1. Create a shortcut to CopyPasta.jar
 2. Open the shortcut's properties *(see screenshot)*
-3. If you used the installer, put "javaw -jar" before the path to CopyPasta.jar  
-   If you unpacked the JRE instead, put the full path to "javaw.exe -jar" before it
+3. If you used the installer, put `javaw -jar` before the path to CopyPasta.jar  
+   If you used the ZIP-file, put `"C:\WHERE-YOU-UNPACKED\bin\javaw.exe" -jar` before it
 4. Run it! \o/  
 
 ##### If you want to start it via the "run" function of Windows
