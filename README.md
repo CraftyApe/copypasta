@@ -5,6 +5,10 @@
 Select your operating system, the link should fill out the rest.  
 Download the latest **<ins>JRE</ins>** release and install it / unpack it somewhere, depending on whether you picked the installer or archive.
 
+## Download
+Select the latest version in the **Releases** section in the right sidebar of this Github page.
+All you need is the *CopyPasta.jar* file.
+
 ## Run the app
 ### Windows
 <a href="https://github.com/CraftyApe/copypasta/blob/master/howto.png" target="_blank">
